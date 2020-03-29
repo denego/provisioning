@@ -134,6 +134,29 @@ $ terraform plan
 $ terraform apply
 ```
 
+## Execute from Docker container
+
+Build image:
+
+```sh
+docker build . -t hobbykubeprovisioning
+```
+
+Run `terraform` from docker container:
+
+```sh
+docker run -it --rm                             \
+        -v $SSH_AUTH_SOCK:/ssh-agent            \
+        --env SSH_AUTH_SOCK=/ssh-agent          \
+        -v $(pwd):/opt                          \
+        -v $HOME/.kube:/root/.kube              \
+        -e TF_VAR_hcloud_token=<token>          \
+        -e TF_VAR_digitalocean_token=<token>    \
+        -e TF_VAR_domain=example.com            \
+        -e TF_VAR_hcloud_ssh_keys='["id_rsa"]'  \
+    hobbykubeprovisioning init
+```
+
 ## Using modules independently
 
 Modules in this repository can be used independently:
