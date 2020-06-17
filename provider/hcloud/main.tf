@@ -53,7 +53,9 @@ resource "hcloud_server" "host" {
     inline = [
       "while fuser /var/{lib/{dpkg,apt/lists},cache/apt/archives}/lock >/dev/null 2>&1; do sleep 1; done",
       "apt-get update",
+      "apt-get dist-upgrade -y",
       "apt-get install -yq ufw ${join(" ", var.apt_packages)}",
+      "shutdown -r +1 && sleep 58",
     ]
   }
 }
